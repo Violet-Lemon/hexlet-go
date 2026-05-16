@@ -4,8 +4,11 @@ import (
 	"fmt"
 	"github.com/Violet-Lemon/hexlet-go/v2/greeting"
 	"github.com/fatih/color"
-	em "github.com/Violet-Lemon/hexlet-go/v2/employees"
-	pr "github.com/Violet-Lemon/hexlet-go/v2/payroll"
+	"strings"
+	//em "github.com/Violet-Lemon/hexlet-go/v2/employees"
+	//pr "github.com/Violet-Lemon/hexlet-go/v2/payroll"
+	"github.com/Violet-Lemon/hexlet-go/v2/orders"
+	"github.com/Violet-Lemon/hexlet-go/v2/accounts"
 )
 
 /*type Movie struct {
@@ -56,7 +59,7 @@ func main() {
 
 	Deposit(&acc1, 1000000.0)*/
 
-	team := []em.Employee{
+	/*team := []em.Employee{
 		{
 			Name: "Bob",
 			Position: "boss",
@@ -106,5 +109,79 @@ func main() {
 		gross := pr.CalcGross(e, bonusPct)
 		fmt.Printf("Грязная зарплата %s (%s): %.2f\n", e.Name, e.Position, gross)
 		fmt.Printf("Чистая зарплата %s (%s): %.2f\n", e.Name, e.Position, pr.CalcNet(gross, taxPct))
+		}*/
+
+	order1 := orders.Order{
+		ID: 1,
+		Customer: "Plushka",
+		Status: "new",
 	}
+
+	fmt.Println("новый заказ", order1.Status)
+
+	orders.SetStatusCopy(order1, "paid")
+
+	fmt.Println("применить для копии", order1.Status)
+
+	orders.SetStatusPtr(&order1, "paid")
+
+	fmt.Println("применить для заказа", order1.Status)
+
+	a := 1
+	fmt.Println(Inc(&a), a)
+	fmt.Println(Inc(&a), a)
+	fmt.Println(Inc(nil))
+
+	account1 := accounts.Account{
+		ID: 1,
+		Owner: "Buba",
+	}
+
+	fmt.Println("первоначальный баланс", account1.Balance())
+
+	account1.Deposit(-100)
+
+	fmt.Println("отрицательный депозит", account1.Balance())
+
+	account1.Deposit(100)
+	account1.Deposit(20)
+	account1.Deposit(3)
+
+	fmt.Println("пополнение", account1.Balance())
+
+	books := []Book{
+		{Title: "Евгений Онегин", Author: "Пушкин А.С."},
+		{Title: "Мастер и Маргарита", Author: "Булгаков М.А."},
+		{Title: "Сказка о Царе Солтане", Author: "Пушкин А.С."},
+	}
+
+	titles := make([]string, 0, len(books))
+	for _, b := range books {
+		titles = append(titles, b.Title)
+	}
+	fmt.Println(strings.Join(titles, ", "))
+
+	author := "Пушкин А.С."
+	count := 0
+	for _, b := range books {
+		if b.Author == author {
+			count++
+		}
+	}
+	fmt.Printf("Книг автора %s: %d\n", author, count)
+}
+
+func Inc(p *int) bool {
+	if p == nil {
+		return false
+	}
+
+	*p++
+
+	return true
+}
+
+type Book struct {
+	Title  string
+	Author string
 }
